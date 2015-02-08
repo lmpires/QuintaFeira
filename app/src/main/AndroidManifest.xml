@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.lauramarra.quintafeira" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Menu"
+            android:label="@string/title_activity_menu" >
+        </activity>
+        <activity
+            android:name=".NovoMenu"
+            android:label="@string/title_activity_novo_menu"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Disciplinas"
+            android:label="@string/title_activity_disciplinas"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Alimentacao"
+            android:label="@string/title_activity_alimentacao"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Transporte"
+            android:label="@string/title_activity_transporte"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Biblioteca"
+            android:label="@string/title_activity_biblioteca"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SuporteAluno"
+            android:label="@string/title_activity_suporte_aluno"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Grade"
+            android:label="@string/title_activity_grade"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Andamento"
+            android:label="@string/title_activity_andamento"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Qualidade"
+            android:label="@string/title_activity_qualidade"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+    </application>
+
+</manifest>

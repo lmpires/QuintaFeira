@@ -1,0 +1,1 @@
+1,algoritmos,7,4,x,x,x,segunda2,banco de dados,6,4,x,x,x,terca3,computacao,7,4,x,x,x,x,quarta4,desenho,6,4,x,x,x,quinta5,evolucao,7,4,x,x,x,sexta6,fisica,6,4,sx,x,x,sabado7,gerencia,7,4,cx,x,x,domingo8,historia,6,4,x,x,x,segunda
