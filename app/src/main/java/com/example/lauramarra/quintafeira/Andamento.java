@@ -1,39 +1,86 @@
 package com.example.lauramarra.quintafeira;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class Andamento extends ActionBarActivity {
 
+    TextView textView;
+    MyDBHandler dbHandler;
+    EditText codigo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_andamento);
+
+        codigo = (EditText) findViewById(R.id.codigo);
+        textView = (TextView) findViewById(R.id.textView);
+
+        getFields();
     }
 
+    public void getFields() {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_andamento, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        dbHandler = new MyDBHandler(this, null, null, 1);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        BufferedReader bufferedReader = null;
+        String codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana;
+        Materia materia;
+
+        try {
+            String sCurrentLine = null;
+            bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open("123.txt")));
+
+            while ((sCurrentLine = bufferedReader.readLine()) != null) {
+
+                String[] message = sCurrentLine.split(",");
+
+                codigo = message[0];
+                nome = message[1];
+                periodo = message[2];
+                creditos = message[3];
+                preRequisito_1 = message[4];
+                preRequisito_2 = message[5];
+                preRequisito_3 = message[6];
+                diaSemana = message[7];
+
+                materia = new Materia(codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana);
+                dbHandler.addMateria(materia);
+
+                printDatabase();
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                if (bufferedReader != null) bufferedReader.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    public void printDatabase(){
+        String dbString = dbHandler.databaseToString();
+        textView.setText(dbString);
+    }
+
+    //Delete items
+    public void deleteButtonClicked(View view){
+        String inputText = codigo.getText().toString();
+        dbHandler.delMateria(inputText);
+        printDatabase();
+        codigo.setText("");
     }
 }
