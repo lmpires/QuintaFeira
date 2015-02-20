@@ -3,20 +3,20 @@ package com.example.lauramarra.quintafeira;
 /**
  * Created by lauramarra on 07/02/15.
  */
-public class Materia {
+public class GradeCompletaDB {
     private int _id;
     private String _codigo, _nome, _periodo, _creditos, _preRequisito1, _preRequisito2, _preRequisito3, _diaSemana;
 
-    public Materia(){}
+    public GradeCompletaDB(){}
 
-    public Materia(String codigo,
-                   String nome,
-                   String periodo,
-                   String creditos,
-                   String preRequisito1,
-                   String preRequisito2,
-                   String preRequisito3,
-                   String diaSemana) {
+    public GradeCompletaDB(String codigo,
+                           String nome,
+                           String periodo,
+                           String creditos,
+                           String preRequisito1,
+                           String preRequisito2,
+                           String preRequisito3,
+                           String diaSemana) {
         this._codigo = codigo;
         this._nome = nome;
         this._periodo = periodo;

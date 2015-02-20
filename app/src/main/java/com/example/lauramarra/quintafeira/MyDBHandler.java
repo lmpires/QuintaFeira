@@ -53,17 +53,17 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
 
     //Add a new row to the database
-    public void addMateria(Materia materia){
+    public void addMateria(GradeCompletaDB gradeCompletaDB){
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_CODIGO, materia.get_codigo());
-        values.put(COLUMN_NOME, materia.get_nome());
-        values.put(COLUMN_PERIODO, materia.get_periodo());
-        values.put(COLUMN_CREDITOS, materia.get_creditos());
-        values.put(COLUMN_PREREQUISITO1, materia.get_preRequisito1());
-        values.put(COLUMN_PREREQUISITO2, materia.get_preRequisito2());
-        values.put(COLUMN_PREREQUISITO3, materia.get_preRequisito3());
-        values.put(COLUMN_DIASEMANA, materia.get_diaSemana());
+        values.put(COLUMN_CODIGO, gradeCompletaDB.get_codigo());
+        values.put(COLUMN_NOME, gradeCompletaDB.get_nome());
+        values.put(COLUMN_PERIODO, gradeCompletaDB.get_periodo());
+        values.put(COLUMN_CREDITOS, gradeCompletaDB.get_creditos());
+        values.put(COLUMN_PREREQUISITO1, gradeCompletaDB.get_preRequisito1());
+        values.put(COLUMN_PREREQUISITO2, gradeCompletaDB.get_preRequisito2());
+        values.put(COLUMN_PREREQUISITO3, gradeCompletaDB.get_preRequisito3());
+        values.put(COLUMN_DIASEMANA, gradeCompletaDB.get_diaSemana());
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_FLUXOGRAMA, null, values);
@@ -120,6 +120,31 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 dbString += "Dia da semana: ";
                 dbString += c.getString(c.getColumnIndex("diaSemana"));
                 dbString += "\n\n";
+            }
+            c.moveToNext();
+        }
+        db.close();
+        return dbString;
+    }
+
+    public String getTodaysClass(String codigo, String dia) {
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT " + COLUMN_CODIGO + ", " + COLUMN_DIASEMANA + ", " + COLUMN_NOME + " FROM " + TABLE_FLUXOGRAMA;
+
+        //Cursor points to a location in your results
+        Cursor c = db.rawQuery(query, null);
+
+        //Move to the first row in your results
+        c.moveToFirst();
+
+        //Position after the last row means the end of the results
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex("codigo")) != null) {
+                if (c.getString(c.getColumnIndex("codigo")).equalsIgnoreCase(codigo) &&
+                        c.getString(c.getColumnIndex("diaSemana")).equalsIgnoreCase(dia)) {
+                    dbString += c.getString(c.getColumnIndex("nome"));
+                }
             }
             c.moveToNext();
         }

@@ -77,14 +77,6 @@
                 android:value="com.example.lauramarra.quintafeira.MainActivity" />
         </activity>
         <activity
-            android:name=".Grade"
-            android:label="@string/title_activity_grade"
-            android:parentActivityName=".Disciplinas" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
-        </activity>
-        <activity
             android:name=".Andamento"
             android:label="@string/title_activity_andamento"
             android:parentActivityName=".Disciplinas" >
@@ -95,6 +87,46 @@
         <activity
             android:name=".Qualidade"
             android:label="@string/title_activity_qualidade"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Monday"
+            android:label="@string/title_activity_monday"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Tuesday"
+            android:label="@string/title_activity_tuesday"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Wednesday"
+            android:label="@string/title_activity_wednesday"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Thursday"
+            android:label="@string/title_activity_thursday"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
+        </activity>
+        <activity
+            android:name=".Friday"
+            android:label="@string/title_activity_friday"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
