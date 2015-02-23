@@ -19,7 +19,8 @@
     <string name="title_activity_andamento">Andamento</string>
     <string name="title_activity_qualidade">Qualidade</string>
     <string name="message">Selecione o status das disciplinas:</string>
-    <string name="message2">Cursando | Concluida</string>
+    <string name="message2">Cursando</string>
+    <string name="message3">Concluida</string>
     <string name="title_activity_selecao">Selecao</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
@@ -28,5 +29,6 @@
     <string name="title_activity_wednesday">Wednesday</string>
     <string name="title_activity_thursday">Thursday</string>
     <string name="title_activity_friday">Friday</string>
+    <string name="title_activity_teste_acesso2">TesteAcesso2</string>
 
 </resources>

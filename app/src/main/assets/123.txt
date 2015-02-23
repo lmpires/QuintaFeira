@@ -1,1 +1,1 @@
-MAC118;calculo;1;6;-;-;-;fridayFIT112;fisica;1;4;-;-;-;fridayEEL170;computacao;1;5;-;-;-;friday
+MAC118;calculo;1;6;-;-;-;friday;H209FIT112;fisica;1;4;-;-;-;friday;F107EEL170;computacao;1;5;-;-;-;friday;H219

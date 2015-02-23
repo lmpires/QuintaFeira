@@ -180,4 +180,30 @@ public class MyDBHandler2 extends SQLiteOpenHelper{
         db.close();
         return b;
     }
+
+    public String getClassToday(){
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT "+ COLUMN_CODIGO + ", " + COLUMN_STATUS +" FROM " + TABLE_ANDAMENTO;
+
+
+        //Cursor points to a location in your results
+        Cursor c = db.rawQuery(query, null);
+
+        //Move to the first row in your results
+        c.moveToFirst();
+
+        //Position after the last row means the end of the results
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex("codigo")) != null) {
+                if(c.getString(c.getColumnIndex("status")).equalsIgnoreCase("cursando")) {
+                    dbString += c.getString(c.getColumnIndex("codigo"));
+                    dbString += ";";
+                }
+            }
+            c.moveToNext();
+        }
+        db.close();
+        return dbString;
+    }
 }

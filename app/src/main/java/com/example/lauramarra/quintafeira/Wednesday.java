@@ -29,7 +29,7 @@ public class Wednesday extends ActionBarActivity {
         setContentView(R.layout.activity_wednesday);
 
         dayText = (TextView) findViewById(R.id.dayText);
-        dayText.setText("Olá! " + "\n" + "\n" + "Estas são suas aulas do dia:");
+        dayText.setText("Olá! " + "\n" + "Estas são suas aulas do dia:");
 
         gradeDoDia = (ListView) findViewById(R.id.gradeDoDia);
 
@@ -48,11 +48,14 @@ public class Wednesday extends ActionBarActivity {
 
                 AlertDialog alertDialog;
 
+                dbHandler = new MyDBHandler(getApplicationContext(), null, null, 1);
+
                 switch (position) {
                     case 0:
+
                         alertDialog = new AlertDialog.Builder(Wednesday.this).create();
                         alertDialog.setTitle(menuOptions[0]);
-                        alertDialog.setMessage("Local: H219" + "\n" + "Status: Confimada!");
+                        alertDialog.setMessage("Local: H217" + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }

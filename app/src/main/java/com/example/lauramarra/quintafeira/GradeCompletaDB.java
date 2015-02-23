@@ -5,7 +5,7 @@ package com.example.lauramarra.quintafeira;
  */
 public class GradeCompletaDB {
     private int _id;
-    private String _codigo, _nome, _periodo, _creditos, _preRequisito1, _preRequisito2, _preRequisito3, _diaSemana;
+    private String _codigo, _nome, _periodo, _creditos, _preRequisito1, _preRequisito2, _preRequisito3, _diaSemana, _local;
 
     public GradeCompletaDB(){}
 
@@ -16,7 +16,8 @@ public class GradeCompletaDB {
                            String preRequisito1,
                            String preRequisito2,
                            String preRequisito3,
-                           String diaSemana) {
+                           String diaSemana,
+                           String local) {
         this._codigo = codigo;
         this._nome = nome;
         this._periodo = periodo;
@@ -25,6 +26,7 @@ public class GradeCompletaDB {
         this._preRequisito2 = preRequisito2;
         this._preRequisito3 = preRequisito3;
         this._diaSemana = diaSemana;
+        this._local = local;
     }
 
     public void set_id(int _id) {
@@ -63,6 +65,8 @@ public class GradeCompletaDB {
         this._diaSemana = _diaSemana;
     }
 
+    public void set_local(String _local) { this._local = _local; }
+
     public int get_id() {
         return _id;
     }
@@ -98,4 +102,6 @@ public class GradeCompletaDB {
     public String get_diaSemana() {
         return _diaSemana;
     }
+
+    public String get_local() { return _local; }
 }

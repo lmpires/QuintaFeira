@@ -132,6 +132,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lauramarra.quintafeira.Disciplinas" />
         </activity>
+        <activity
+            android:name=".TesteAcesso2"
+            android:label="@string/title_activity_teste_acesso2" >
+        </activity>
     </application>
 
 </manifest>

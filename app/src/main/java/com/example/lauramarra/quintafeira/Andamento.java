@@ -1,6 +1,7 @@
 package com.example.lauramarra.quintafeira;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +32,12 @@ public class Andamento extends ActionBarActivity {
     TextView textView, titleText;
     MyDBHandler dbHandler;
     MyDBHandler2 dbChecker;
+    Button nextAct;
 
 
     //create a variable of type SharedPreferences:
     SharedPreferences sharedpreferences;
-    String prename="mypref";
+    String prename="PREFERENCES";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,29 +46,25 @@ public class Andamento extends ActionBarActivity {
 
         //textView = (TextView) findViewById(R.id.bdText);
         //teste = (TextView) findViewById(R.id.teste);
+        nextAct = (Button) findViewById(R.id.nextACt);
         titleText = (TextView) findViewById(R.id.titleText);
-
         titleText.setText("Controle aqui as materias cursadas e em andamento:");
 
         getFields();
 
         //Generate list View from ArrayList
         displayListView();
-
-        //checkButtonClick();
     }
 
     private void displayListView() {
 
         //Array list of classes
-        ArrayList<CheckMateria> materiaList = new ArrayList<CheckMateria>();
+        final ArrayList<CheckMateria> materiaList = new ArrayList<CheckMateria>();
 
         CheckMateria itemList = new CheckMateria("MAC118","Calculo I",false);
         materiaList.add(itemList);
-
         itemList = new CheckMateria("FIT112","Fisica I",false);
         materiaList.add(itemList);
-
         itemList = new CheckMateria("EEL170","Computacao I",false);
         materiaList.add(itemList);
 
@@ -102,7 +103,7 @@ public class Andamento extends ActionBarActivity {
         private class ViewHolder {
             TextView code;
             CheckBox name;
-            CheckBox classOk;
+            Switch swt;
         }
 
         @Override
@@ -112,13 +113,11 @@ public class Andamento extends ActionBarActivity {
             dbChecker = new MyDBHandler2(context, null, null, 1);
             final CheckMateria itemMat = listMaterias.get(position);
 
-
             ViewHolder holder = null;
             Log.v("ConvertView", String.valueOf(position));
 
-
             // get the SharedPreferences object
-            sharedpreferences= getSharedPreferences(prename , MODE_PRIVATE);
+            sharedpreferences= getSharedPreferences(prename , MODE_MULTI_PROCESS);
 
             // Store new primitive types in the shared preferences object
             final SharedPreferences.Editor editor=sharedpreferences.edit();
@@ -133,96 +132,84 @@ public class Andamento extends ActionBarActivity {
                 holder = new ViewHolder();
                 holder.code = (TextView) convertView.findViewById(R.id.code);
                 holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
-                holder.classOk = (CheckBox) convertView.findViewById(R.id.itemCheck);
-                
+                holder.swt  =(Switch) convertView.findViewById(R.id.switch1);
+
                 convertView.setTag(holder);
 
                 final ViewHolder finalHolder = holder;
-                final ViewHolder finalHolder1 = holder;
 
-                holder.name.setEnabled(false);
-
-
-
-                SharedPreferences sharedPreferences = PreferenceManager
-                        .getDefaultSharedPreferences(context);
-                boolean checkBoxValue = sharedPreferences.getBoolean("CheckBox_Value", false);
-                if (checkBoxValue) {
-                    holder.name.setChecked(true);
-                } else {
-                    holder.name.setChecked(false);
-                }
-
-
-
-
-                final ViewHolder finalHolder2 = holder;
-                holder.classOk.setOnClickListener( new View.OnClickListener() {
+                holder.name.setOnClickListener( new View.OnClickListener() {
 
                     public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v ;
+                        Toast.makeText(getApplicationContext(), cb.getText() + ": Cursando", Toast.LENGTH_LONG).show();
 
-                        final CheckBox cb = (CheckBox) v;
+                        if(loadSavedPreferences(itemMat.getName()))
+                            cb.setChecked(true);
 
-                        Toast.makeText(getApplicationContext(), itemMat.name + ": Cursando", Toast.LENGTH_SHORT).show();
-
-                        if (cb.isChecked()) {
+                        if(cb.isChecked()) {
+                            if(dbChecker.itemExists()){
+                                dbChecker.delMateria(itemMat.getCode());
+                            }
                             GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
                             dbChecker.addMateria(materia);
-
-                            finalHolder2.name.setEnabled(true);
-                            savePreferences("CheckBox_Value", cb.isChecked());
-
-
-                        } else {
-                            if (dbChecker.itemExists()) {
+                        }
+                        else{
+                            if(dbChecker.itemExists()){
                                 dbChecker.delMateria(itemMat.getCode());
-
-                                finalHolder2.name.setEnabled(false);
-                                savePreferences(cb.getText().toString(), cb.isChecked());
-
                             }
                         }
-
-                        savePreferences(cb.getText().toString(), cb.isChecked());
-
-                        finalHolder1.name.setOnClickListener( new View.OnClickListener() {
-                            public void onClick(View v) {
-                                CheckBox cbb = (CheckBox) v ;
-                                //ItemMateria itemMateria = (ItemMateria) cb.getTag();
-                                //itemMateria.setSelected(cb.isChecked());
-
-                                Toast.makeText(getApplicationContext(), cbb.getText() + ": Concluída", Toast.LENGTH_SHORT).show();
-
-                                if(cbb.isChecked()) {
-                                    if(dbChecker.itemExists()){
-                                        dbChecker.delMateria(itemMat.getCode());
-                                    }
-                                    GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Concluida");
-                                    dbChecker.addMateria(materia);
-                                    cb.setEnabled(false);
-
-                                    savePreferences(cbb.getText().toString(), cbb.isChecked());
-
-
-                                }
-                                else{
-                                    if(dbChecker.itemExists()){
-                                        dbChecker.delMateria(itemMat.getCode());
-                                    }
-                                    GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
-                                    dbChecker.addMateria(materia);
-                                    cb.setEnabled(true);
-
-                                    savePreferences(cbb.getText().toString(), cbb.isChecked());
-
-                                }
-                                //printDatabase();
-
-                            }
-                        });
+                        editor.putBoolean(itemMat.getName(), cb.isChecked()).apply();
                     }
-
                 });
+
+                final ViewHolder finalHolder1 = holder;
+
+                holder.swt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked) {
+                            finalHolder1.name.setEnabled(false);
+
+                            Toast.makeText(getApplicationContext(), finalHolder1.name.getText() + ": Concluída", Toast.LENGTH_SHORT).show();
+
+                            if(finalHolder1.name.isChecked()) {
+                                if(dbChecker.itemExists()){
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Concluida");
+                                dbChecker.addMateria(materia);
+                            }
+
+                            else{
+                                if(dbChecker.itemExists()){
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
+                                dbChecker.addMateria(materia);
+                            }
+                        }
+                        if(!isChecked){
+                            finalHolder.name.setEnabled(true);
+
+                            Toast.makeText(getApplicationContext(), finalHolder1.name.getText() + "Cursando", Toast.LENGTH_SHORT).show();
+
+                            finalHolder.name.setChecked(false);
+
+                        }
+
+                    }
+                });
+
+                nextAct.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent i;
+                        i = new Intent(getApplicationContext(), TesteAcesso2.class);
+                        startActivity(i);
+                    }
+                });
+
             }
             else {
                 holder = (ViewHolder) convertView.getTag();
@@ -232,6 +219,8 @@ public class Andamento extends ActionBarActivity {
             holder.name.setText(itemMat.getName());
             holder.name.setChecked(itemMat.isSelected());
             holder.name.setTag(itemMat);
+            if(loadSavedPreferences(itemMat.getName()))
+                holder.name.setChecked(true);
 
             return convertView;
         }
@@ -241,7 +230,7 @@ public class Andamento extends ActionBarActivity {
 
         dbHandler = new MyDBHandler(Andamento.this, null, null, 1);
 
-        String codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana;
+        String codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana, local;
         GradeCompletaDB gradeCompletaDB;
 
         BufferedReader reader = null;
@@ -264,10 +253,10 @@ public class Andamento extends ActionBarActivity {
                 preRequisito_1 = message[4];
                 preRequisito_2 = message[5];
                 preRequisito_3 = message[6];
-
                 diaSemana = message[7];
+                local = message[8];
 
-                gradeCompletaDB = new GradeCompletaDB(codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana);
+                gradeCompletaDB = new GradeCompletaDB(codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana, local);
                 dbHandler.addMateria(gradeCompletaDB);
 
                 //printDatabase();
@@ -293,47 +282,13 @@ public class Andamento extends ActionBarActivity {
         textView.setText(dbString);
     }
 
-/*
-    public void printDatabase(){
-        String dbString = dbHandler.databaseToString();
-        textView.setText(dbString);
-    }
-*/
-
-    /*
-    private void checkButtonClick() {
-        Button myButton = (Button) findViewById(R.id.findSelected);
-        myButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                StringBuffer responseText = new StringBuffer();
-                responseText.append("The following were selected...\n");
-
-                ArrayList<ItemMateria> countryList = dataAdapter.listMaterias;
-                for(int i=0;i<countryList.size();i++){
-                    ItemMateria country = countryList.get(i);
-                    if(country.isSelected()){
-                        responseText.append("\n" + country.getName());
-                    }
-                }
-
-                Toast.makeText(getApplicationContext(),
-                        responseText, Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-    }
-
-*/
-
-    private void savePreferences(String key, boolean value) {
+    private boolean loadSavedPreferences(String value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.apply();
+        boolean checkBoxValue = sharedPreferences.getBoolean(value, false);
+        if (checkBoxValue)
+            return true;
+        else
+            return false;
     }
 }
