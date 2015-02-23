@@ -21,8 +21,7 @@ public class Wednesday extends ActionBarActivity {
     MyDBHandler2 dbChecker;
 
     private ListView gradeDoDia;
-
-    String[] disciplinas = new String[] {"Calculo", "Fisica", "Computacao"};
+    String[] menuOptions = new String[20];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +31,14 @@ public class Wednesday extends ActionBarActivity {
         dayText = (TextView) findViewById(R.id.dayText);
         dayText.setText("Olá! " + "\n" + "\n" + "Estas são suas aulas do dia:");
 
-        /*
-
-        disciplinas[0] = "";
-        disciplinas[1] = "";
-
-        disciplinas[0] = getTodaysClass()[0];
-        disciplinas[1] = getTodaysClass()[1];
-
-        */
-
         gradeDoDia = (ListView) findViewById(R.id.gradeDoDia);
 
+        dbChecker = new MyDBHandler2(this, null, null, 1);
+
+        menuOptions = dbChecker.getID().split(";");
+
         ArrayAdapter<String> newAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, disciplinas);
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOptions);
 
         gradeDoDia.setAdapter(newAdapter);
 
@@ -58,7 +51,7 @@ public class Wednesday extends ActionBarActivity {
                 switch (position) {
                     case 0:
                         alertDialog = new AlertDialog.Builder(Wednesday.this).create();
-                        alertDialog.setTitle(disciplinas[0]);
+                        alertDialog.setTitle(menuOptions[0]);
                         alertDialog.setMessage("Local: H219" + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -68,7 +61,7 @@ public class Wednesday extends ActionBarActivity {
                         break;
                     case 1:
                         alertDialog = new AlertDialog.Builder(Wednesday.this).create();
-                        alertDialog.setTitle(disciplinas[1]);
+                        alertDialog.setTitle(menuOptions[1]);
                         alertDialog.setMessage("Local: F112" + "\n" + "Status: Cancelada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -78,7 +71,7 @@ public class Wednesday extends ActionBarActivity {
                         break;
                     case 2:
                         alertDialog = new AlertDialog.Builder(Wednesday.this).create();
-                        alertDialog.setTitle(disciplinas[2]);
+                        alertDialog.setTitle(menuOptions[2]);
                         alertDialog.setMessage("Local: H217" + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

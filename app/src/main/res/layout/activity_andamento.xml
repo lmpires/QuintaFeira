@@ -44,7 +44,7 @@
         android:id="@+id/bdText" />
 
     <Button
-        android:id="@+id/findSelected"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1º Periodo" />

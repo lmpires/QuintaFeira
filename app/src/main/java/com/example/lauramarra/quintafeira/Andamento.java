@@ -3,6 +3,7 @@ package com.example.lauramarra.quintafeira;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,9 +25,14 @@ import java.util.ArrayList;
 public class Andamento extends ActionBarActivity {
 
     MyCustomAdapter dataAdapter = null;
-    TextView textView, teste, titleText;
+    TextView textView, titleText;
     MyDBHandler dbHandler;
     MyDBHandler2 dbChecker;
+
+
+    //create a variable of type SharedPreferences:
+    SharedPreferences sharedpreferences;
+    String prename="mypref";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,18 +57,15 @@ public class Andamento extends ActionBarActivity {
 
         //Array list of classes
         ArrayList<CheckMateria> materiaList = new ArrayList<CheckMateria>();
+
         CheckMateria itemList = new CheckMateria("MAC118","Calculo I",false);
         materiaList.add(itemList);
+
         itemList = new CheckMateria("FIT112","Fisica I",false);
         materiaList.add(itemList);
+
         itemList = new CheckMateria("EEL170","Computacao I",false);
         materiaList.add(itemList);
-        /*
-        itemList = new CheckMateria("3","Fisica Experimental I",false);
-        materiaList.add(itemList);
-        itemList = new CheckMateria("5","Quimica I",false);
-        materiaList.add(itemList);
-        */
 
         //create an ArrayAdaptar from the String Array
         dataAdapter = new MyCustomAdapter(this, R.layout.materia_info, materiaList);
@@ -88,7 +91,8 @@ public class Andamento extends ActionBarActivity {
 
         private ArrayList<CheckMateria> listMaterias;
 
-        public MyCustomAdapter(Context context, int textViewResourceId,
+        public MyCustomAdapter(Context context,
+                               int textViewResourceId,
                                ArrayList<CheckMateria> countryList) {
             super(context, textViewResourceId, countryList);
             this.listMaterias = new ArrayList<CheckMateria>();
@@ -102,14 +106,24 @@ public class Andamento extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             Context context = getContext();
             dbChecker = new MyDBHandler2(context, null, null, 1);
             final CheckMateria itemMat = listMaterias.get(position);
 
+
             ViewHolder holder = null;
             Log.v("ConvertView", String.valueOf(position));
+
+
+            // get the SharedPreferences object
+            sharedpreferences= getSharedPreferences(prename , MODE_PRIVATE);
+
+            // Store new primitive types in the shared preferences object
+            final SharedPreferences.Editor editor=sharedpreferences.edit();
+
+
             if (convertView == null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
@@ -120,11 +134,29 @@ public class Andamento extends ActionBarActivity {
                 holder.code = (TextView) convertView.findViewById(R.id.code);
                 holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
                 holder.classOk = (CheckBox) convertView.findViewById(R.id.itemCheck);
+                
                 convertView.setTag(holder);
 
                 final ViewHolder finalHolder = holder;
                 final ViewHolder finalHolder1 = holder;
 
+                holder.name.setEnabled(false);
+
+
+
+                SharedPreferences sharedPreferences = PreferenceManager
+                        .getDefaultSharedPreferences(context);
+                boolean checkBoxValue = sharedPreferences.getBoolean("CheckBox_Value", false);
+                if (checkBoxValue) {
+                    holder.name.setChecked(true);
+                } else {
+                    holder.name.setChecked(false);
+                }
+
+
+
+
+                final ViewHolder finalHolder2 = holder;
                 holder.classOk.setOnClickListener( new View.OnClickListener() {
 
                     public void onClick(View v) {
@@ -136,12 +168,22 @@ public class Andamento extends ActionBarActivity {
                         if (cb.isChecked()) {
                             GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
                             dbChecker.addMateria(materia);
+
+                            finalHolder2.name.setEnabled(true);
+                            savePreferences("CheckBox_Value", cb.isChecked());
+
+
                         } else {
                             if (dbChecker.itemExists()) {
                                 dbChecker.delMateria(itemMat.getCode());
+
+                                finalHolder2.name.setEnabled(false);
+                                savePreferences(cb.getText().toString(), cb.isChecked());
+
                             }
                         }
-                        //printDatabase();
+
+                        savePreferences(cb.getText().toString(), cb.isChecked());
 
                         finalHolder1.name.setOnClickListener( new View.OnClickListener() {
                             public void onClick(View v) {
@@ -159,8 +201,8 @@ public class Andamento extends ActionBarActivity {
                                     dbChecker.addMateria(materia);
                                     cb.setEnabled(false);
 
-                                    SharedPreferences settings = getSharedPreferences("preferences",0);
-                                    settings.edit().putBoolean("check",true).commit();
+                                    savePreferences(cbb.getText().toString(), cbb.isChecked());
+
 
                                 }
                                 else{
@@ -170,8 +212,12 @@ public class Andamento extends ActionBarActivity {
                                     GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
                                     dbChecker.addMateria(materia);
                                     cb.setEnabled(true);
+
+                                    savePreferences(cbb.getText().toString(), cbb.isChecked());
+
                                 }
                                 //printDatabase();
+
                             }
                         });
                     }
@@ -252,8 +298,9 @@ public class Andamento extends ActionBarActivity {
         String dbString = dbHandler.databaseToString();
         textView.setText(dbString);
     }
+*/
 
-
+    /*
     private void checkButtonClick() {
         Button myButton = (Button) findViewById(R.id.findSelected);
         myButton.setOnClickListener(new View.OnClickListener() {
@@ -280,29 +327,13 @@ public class Andamento extends ActionBarActivity {
 
     }
 
-/*
-    TextView textView;
-    MyDBHandler dbHandler;
-    EditText codigo;
+*/
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_andamento);
-
-        codigo = (EditText) findViewById(R.id.codigo);
-        textView = (TextView) findViewById(R.id.textView);
-
-        getFields();
+    private void savePreferences(String key, boolean value) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
     }
-
-    //Delete items
-    public void deleteButtonClicked(View view){
-        String inputText = codigo.getText().toString();
-        dbHandler.delMateria(inputText);
-        printDatabase();
-        codigo.setText("");
-    }
-    */
 }

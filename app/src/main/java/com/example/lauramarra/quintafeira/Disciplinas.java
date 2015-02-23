@@ -63,6 +63,10 @@ public class Disciplinas extends ActionBarActivity {
                                 i = new Intent(getApplicationContext(), Wednesday.class);
                                 startActivity(i);
                                 break;
+                            case Calendar.SUNDAY:
+                                i = new Intent(getApplicationContext(), Wednesday.class);
+                                startActivity(i);
+                                break;
                         }
                         break;
                     case 1:
