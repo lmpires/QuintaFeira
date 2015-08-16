@@ -1,22 +1,18 @@
 package com.example.lauramarra.quintafeira;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,23 +26,19 @@ public class Andamento extends ActionBarActivity {
 
     MyCustomAdapter dataAdapter = null;
     TextView textView, titleText;
-    MyDBHandler dbHandler;
+    MyDBHandler dbHandler, dbHandlerTemp;
     MyDBHandler2 dbChecker;
-    Button nextAct;
 
 
     //create a variable of type SharedPreferences:
     SharedPreferences sharedpreferences;
-    String prename="PREFERENCES";
+    String prename = "PREFERENCES";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_andamento);
 
-        //textView = (TextView) findViewById(R.id.bdText);
-        //teste = (TextView) findViewById(R.id.teste);
-        nextAct = (Button) findViewById(R.id.nextACt);
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setText("Controle aqui as materias cursadas e em andamento:");
 
@@ -61,177 +53,10 @@ public class Andamento extends ActionBarActivity {
         //Array list of classes
         final ArrayList<CheckMateria> materiaList = new ArrayList<CheckMateria>();
 
-        CheckMateria itemList = new CheckMateria("MAC118","Calculo I",false);
-        materiaList.add(itemList);
-        itemList = new CheckMateria("FIT112","Fisica I",false);
-        materiaList.add(itemList);
-        itemList = new CheckMateria("EEL170","Computacao I",false);
-        materiaList.add(itemList);
+        String codigo, nome, diaSemana, status;
+        CheckMateria itemList;
 
-        //create an ArrayAdaptar from the String Array
-        dataAdapter = new MyCustomAdapter(this, R.layout.materia_info, materiaList);
-        ListView listView = (ListView) findViewById(R.id.listView1);
-
-        // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // When clicked, show a toast with the TextView text
-                CheckMateria item = (CheckMateria) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Clicked on Row: " + item.getName(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    public class MyCustomAdapter extends ArrayAdapter<CheckMateria> {
-
-        private ArrayList<CheckMateria> listMaterias;
-
-        public MyCustomAdapter(Context context,
-                               int textViewResourceId,
-                               ArrayList<CheckMateria> countryList) {
-            super(context, textViewResourceId, countryList);
-            this.listMaterias = new ArrayList<CheckMateria>();
-            this.listMaterias.addAll(countryList);
-        }
-
-        private class ViewHolder {
-            TextView code;
-            CheckBox name;
-            Switch swt;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-            Context context = getContext();
-            dbChecker = new MyDBHandler2(context, null, null, 1);
-            final CheckMateria itemMat = listMaterias.get(position);
-
-            ViewHolder holder = null;
-            Log.v("ConvertView", String.valueOf(position));
-
-            // get the SharedPreferences object
-            sharedpreferences= getSharedPreferences(prename , MODE_MULTI_PROCESS);
-
-            // Store new primitive types in the shared preferences object
-            final SharedPreferences.Editor editor=sharedpreferences.edit();
-
-
-            if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater)getSystemService(
-                        Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.materia_info, null);
-
-
-                holder = new ViewHolder();
-                holder.code = (TextView) convertView.findViewById(R.id.code);
-                holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
-                holder.swt  =(Switch) convertView.findViewById(R.id.switch1);
-
-                convertView.setTag(holder);
-
-                final ViewHolder finalHolder = holder;
-
-                holder.name.setOnClickListener( new View.OnClickListener() {
-
-                    public void onClick(View v) {
-                        CheckBox cb = (CheckBox) v ;
-                        Toast.makeText(getApplicationContext(), cb.getText() + ": Cursando", Toast.LENGTH_LONG).show();
-
-                        if(loadSavedPreferences(itemMat.getName()))
-                            cb.setChecked(true);
-
-                        if(cb.isChecked()) {
-                            if(dbChecker.itemExists()){
-                                dbChecker.delMateria(itemMat.getCode());
-                            }
-                            GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
-                            dbChecker.addMateria(materia);
-                        }
-                        else{
-                            if(dbChecker.itemExists()){
-                                dbChecker.delMateria(itemMat.getCode());
-                            }
-                        }
-                        editor.putBoolean(itemMat.getName(), cb.isChecked()).apply();
-                    }
-                });
-
-                final ViewHolder finalHolder1 = holder;
-
-                holder.swt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked) {
-                            finalHolder1.name.setEnabled(false);
-
-                            Toast.makeText(getApplicationContext(), finalHolder1.name.getText() + ": Concluída", Toast.LENGTH_SHORT).show();
-
-                            if(finalHolder1.name.isChecked()) {
-                                if(dbChecker.itemExists()){
-                                    dbChecker.delMateria(itemMat.getCode());
-                                }
-                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Concluida");
-                                dbChecker.addMateria(materia);
-                            }
-
-                            else{
-                                if(dbChecker.itemExists()){
-                                    dbChecker.delMateria(itemMat.getCode());
-                                }
-                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), "Cursando");
-                                dbChecker.addMateria(materia);
-                            }
-                        }
-                        if(!isChecked){
-                            finalHolder.name.setEnabled(true);
-
-                            Toast.makeText(getApplicationContext(), finalHolder1.name.getText() + "Cursando", Toast.LENGTH_SHORT).show();
-
-                            finalHolder.name.setChecked(false);
-
-                        }
-
-                    }
-                });
-
-                nextAct.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        Intent i;
-                        i = new Intent(getApplicationContext(), TesteAcesso2.class);
-                        startActivity(i);
-                    }
-                });
-
-            }
-            else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.code.setText(" (" +  itemMat.getCode() + ")");
-            holder.name.setText(itemMat.getName());
-            holder.name.setChecked(itemMat.isSelected());
-            holder.name.setTag(itemMat);
-            if(loadSavedPreferences(itemMat.getName()))
-                holder.name.setChecked(true);
-
-            return convertView;
-        }
-    }
-
-    public void getFields() {
-
-        dbHandler = new MyDBHandler(Andamento.this, null, null, 1);
-
-        String codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana, local;
-        GradeCompletaDB gradeCompletaDB;
+        String [] st = null;
 
         BufferedReader reader = null;
         try {
@@ -241,25 +66,19 @@ public class Andamento extends ActionBarActivity {
             // do reading, usually loop until end of file reading
             String mLine = reader.readLine();
             while (mLine != null) {
-                //process line
-                //titleText.setText(mLine);
 
                 String[] message = mLine.split(";");
 
                 codigo = message[0];
                 nome = message[1];
-                periodo = message[2];
-                creditos = message[3];
-                preRequisito_1 = message[4];
-                preRequisito_2 = message[5];
-                preRequisito_3 = message[6];
                 diaSemana = message[7];
-                local = message[8];
+                status = message[9];
 
-                gradeCompletaDB = new GradeCompletaDB(codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana, local);
-                dbHandler.addMateria(gradeCompletaDB);
+                st = diaSemana.split(":");
+                //codigo = st[1];
 
-                //printDatabase();
+                itemList = new CheckMateria(codigo,nome,diaSemana,false,status);
+                materiaList.add(itemList);
 
                 mLine = reader.readLine();
             }
@@ -274,6 +93,224 @@ public class Andamento extends ActionBarActivity {
                 }
             }
         }
+
+        //create an ArrayAdapter from the String Array
+        dataAdapter = new MyCustomAdapter(this, R.layout.materia_info, materiaList);
+        ListView listView = (ListView) findViewById(R.id.listView1);
+
+        // Assign adapter to ListView
+        listView.setAdapter(dataAdapter);
+    }
+
+
+    public class MyCustomAdapter extends ArrayAdapter<CheckMateria> {
+
+        private ArrayList<CheckMateria> listMaterias;
+
+        public MyCustomAdapter(Context context,
+                               int textViewResourceId,
+                               ArrayList<CheckMateria> countryList) {
+
+            super(context, textViewResourceId, countryList);
+            this.listMaterias = new ArrayList<CheckMateria>();
+            this.listMaterias.addAll(countryList);
+        }
+
+        private class ViewHolder {
+            TextView code;
+            TextView status;
+            CheckBox name;
+            //Switch mySwitch;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            Context context = getContext();
+            dbChecker = new MyDBHandler2(context, null, null, 1);
+            final CheckMateria itemMat = listMaterias.get(position);
+
+            ViewHolder holder = null;
+            Log.v("ConvertView", String.valueOf(position));
+
+            // get the SharedPreferences object
+            sharedpreferences= getSharedPreferences(prename,Context.MODE_PRIVATE);
+
+            // Store new primitive types in the shared preferences object
+            final SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            if (convertView == null) {
+                final LayoutInflater vi = (LayoutInflater)getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.materia_info, null);
+
+                holder = new ViewHolder();
+                holder.code = (TextView) convertView.findViewById(R.id.code);
+                holder.status = (TextView) convertView.findViewById(R.id.status);
+                holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                holder.status = (TextView) convertView.findViewById(R.id.status);
+
+                convertView.setTag(holder);
+
+                holder.name.setOnClickListener( new View.OnClickListener() {
+
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v ;
+                        loadSavedPreferences(itemMat.getName());
+
+                            if (cb.isChecked()) {
+                                Toast.makeText(getApplicationContext(), cb.getText() + ": Cursando", Toast.LENGTH_LONG).show();
+
+                                if (dbChecker.itemExists()) {
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), itemMat.getDiaSemana(), "Cursando");
+                                dbChecker.addMateria(materia);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), cb.getText() + ": Pendente", Toast.LENGTH_LONG).show();
+
+                                if (dbChecker.itemExists()) {
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                            }
+                            editor.putBoolean(itemMat.getName(), cb.isChecked()).apply();
+                        }
+                });
+
+                holder.status.setOnClickListener( new View.OnClickListener() {
+
+                    public void onClick(final View v) {
+
+                        final TextView status = (TextView) v ;
+                        Toast.makeText(getApplicationContext(),
+                                "Clicked on Row: " + itemMat.getName() + " is " + itemMat.isSelected(),
+                                Toast.LENGTH_SHORT).show();
+
+                        final CheckBox cb = (CheckBox) v ;
+                        loadSavedPreferences(itemMat.getName());
+
+                        AlertDialog alertDialog;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Andamento.this);
+                        builder.setTitle(itemMat.getName());
+                        builder.setMessage("Gostaria de concluir essa disciplina?");
+
+                        builder.setPositiveButton("Sim!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Toast.makeText(Andamento.this, "concluida=" + arg1, Toast.LENGTH_SHORT).show();
+                                if (dbChecker.itemExists()) {
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), itemMat.getDiaSemana(), "Concluida");
+                                dbChecker.addMateria(materia);
+                                itemMat.setStatus("Concluida");
+                                status.setText("Concluida");
+
+                            }
+                        });
+/*
+                        builder.setNeutralButton("Pendente", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Toast.makeText(Andamento.this, "Pendente=" + arg1, Toast.LENGTH_SHORT).show();
+
+                                if (dbChecker.itemExists()) {
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), itemMat.getDiaSemana(), "Pendente");
+                                dbChecker.addMateria(materia);
+                                itemMat.setStatus("Pendente");
+                                status.setText("Pendente");
+                                cb.setChecked(false);
+                            }
+                        });
+*/
+                        builder.setNegativeButton("Cursando", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Toast.makeText(Andamento.this, "cursando=" + arg1, Toast.LENGTH_SHORT).show();
+
+                                if (dbChecker.itemExists()) {
+                                    dbChecker.delMateria(itemMat.getCode());
+                                }
+                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), itemMat.getDiaSemana(), "Cursando");
+                                dbChecker.addMateria(materia);
+                                itemMat.setStatus("Cursando");
+                                status.setText("Cursando");
+                                cb.setChecked(false);
+                            }
+                        });
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                        editor.putBoolean(itemMat.getName(), cb.isChecked()).apply();
+
+
+                    }
+                });
+
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.code.setText(" (" +  itemMat.getCode() + ")");
+            holder.name.setText(itemMat.getName());
+            holder.name.setChecked(itemMat.isSelected());
+            holder.name.setTag(itemMat);
+            //holder.status.setText(itemMat.getStatus());
+
+
+            if(loadSavedPreferences(itemMat.getName()))
+                holder.name.setChecked(true);
+            return convertView;
+        }
+    }
+
+    public void getFields() {
+
+        dbHandler = new MyDBHandler(Andamento.this, null, null, 1);
+
+        String codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, local, status ;
+        String diaSemana = null;
+        String [] dia;
+        GradeCompletaDB gradeCompletaDB;
+
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getAssets().open("123.txt")));
+
+            // do reading, usually loop until end of file reading
+            String mLine = reader.readLine();
+            while (mLine != null) {
+                String[] message = mLine.split(";");
+
+                codigo = message[0];
+                nome = message[1];
+                periodo = message[2];
+                creditos = message[3];
+                preRequisito_1 = message[4];
+                preRequisito_2 = message[5];
+                preRequisito_3 = message[6];
+                diaSemana = message[7];
+                local = message[8];
+                status = message[9];
+
+                gradeCompletaDB = new GradeCompletaDB(codigo, nome, periodo, creditos, preRequisito_1, preRequisito_2, preRequisito_3, diaSemana, local, status);
+                dbHandler.addMateria(gradeCompletaDB);
+
+                mLine = reader.readLine();
+            }
+        } catch (IOException e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    //log the exception
+                }
+            }
+        }
+
     }
 
     public void printDatabase(){
@@ -283,8 +320,7 @@ public class Andamento extends ActionBarActivity {
     }
 
     private boolean loadSavedPreferences(String value) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(prename, Context.MODE_PRIVATE);
         boolean checkBoxValue = sharedPreferences.getBoolean(value, false);
         if (checkBoxValue)
             return true;
