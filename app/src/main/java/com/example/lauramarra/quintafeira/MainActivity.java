@@ -1,38 +1,40 @@
 package com.example.lauramarra.quintafeira;
 
 
-        import java.io.InputStream;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.content.IntentSender.SendIntentException;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
-        import android.os.AsyncTask;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.View;
-        import android.view.View.OnClickListener;
-        import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
-        import android.widget.Button;
-        import android.widget.ImageView;
-        import android.widget.LinearLayout;
-        import android.widget.ListView;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.common.GooglePlayServicesUtil;
-        import com.google.android.gms.common.SignInButton;
-        import com.google.android.gms.common.api.GoogleApiClient;
-        import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-        import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-        import com.google.android.gms.common.api.ResultCallback;
-        import com.google.android.gms.common.api.Status;
-        import com.google.android.gms.plus.Plus;
-        import com.google.android.gms.plus.model.people.Person;
+import java.io.InputStream;
 
 public class MainActivity extends Activity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
@@ -41,31 +43,23 @@ public class MainActivity extends Activity implements OnClickListener,
     // Logcat tag
     private static final String TAG = "MainActivity";
 
-    // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 400;
-
+    String[] menuOptions = new String[] { "Disciplinas","Alimentação", "Transporte", "Biblioteca"};
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
-
     /**
-     * A flag indicating that a PendingIntent is in progress and prevents us
-     * from starting further intents.
+     * Flag que indica que um PendingIntent está ativo e previne
+     * que novos intents sejam iniciados
      */
     private boolean mIntentInProgress;
-
     private boolean mSignInClicked;
-
     private ConnectionResult mConnectionResult;
-
     private SignInButton btnSignIn;
     private Button btnSignOut, btnRevokeAccess;
     private ImageView imgProfilePic;
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
-
     private ListView menuList;
-
-    String[] menuOptions = new String[] { "Disciplinas","Alimentação", "Transporte", "Biblioteca", "Suporte ao Aluno"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +75,6 @@ public class MainActivity extends Activity implements OnClickListener,
         llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
 
         menuList = (ListView) findViewById(R.id.menuList);
-
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOptions);
@@ -110,26 +103,19 @@ public class MainActivity extends Activity implements OnClickListener,
                         i = new Intent(getApplicationContext(), Biblioteca.class);
                         startActivity(i);
                         break;
-                    case 4:
-                        i = new Intent(getApplicationContext(), SuporteAluno.class);
-                        startActivity(i);
-                        break;
                 }
             }
 
         });
 
-        // Button click listeners
         btnSignIn.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
         btnRevokeAccess.setOnClickListener(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+                .addScope(new Scope(Scopes.PROFILE)).build();
     }
-
 
     protected void onStart() {
         super.onStart();
@@ -143,9 +129,6 @@ public class MainActivity extends Activity implements OnClickListener,
         }
     }
 
-    /**
-     * Method to resolve any signin errors
-     * */
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -167,29 +150,25 @@ public class MainActivity extends Activity implements OnClickListener,
         }
 
         if (!mIntentInProgress) {
-            // Store the ConnectionResult for later usage
+            // Armazena o ConnectionResult para uso posterior
             mConnectionResult = result;
 
             if (mSignInClicked) {
-                // The user has already clicked 'sign-in' so we attempt to
-                // resolve all
-                // errors until the user is signed in, or they cancel.
+                // O usuario ja clicou 'sign-in' entao e feita a tentativa
+                // de resolver todos os problemas
+                // ate que o usuario estaja logado, senao e cancelado
                 resolveSignInError();
             }
         }
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int responseCode,
-                                    Intent intent) {
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 mSignInClicked = false;
             }
-
             mIntentInProgress = false;
-
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
@@ -199,18 +178,15 @@ public class MainActivity extends Activity implements OnClickListener,
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-
-        // Get user's information
+        Toast.makeText(this, "Usuário conectado!", Toast.LENGTH_LONG).show();
+        // Coletar informacoes do usuario
         getProfileInformation();
-
-        // Update the UI after signin
+        // Atualizar a UI depois de conectar
         updateUI(true);
-
     }
 
     /**
-     * Updating the UI, showing/hiding buttons and profile layout
+     * Atualizar a UI, mostran/escondendo os botoes e o layout com o perfil
      * */
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
@@ -229,10 +205,11 @@ public class MainActivity extends Activity implements OnClickListener,
     }
 
     /**
-     * Fetching user's information name, email, profile pic
+     * Coletar informacoes do usuario
      * */
     private void getProfileInformation() {
         try {
+
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);
@@ -248,18 +225,14 @@ public class MainActivity extends Activity implements OnClickListener,
                 txtName.setText(personName);
                 txtEmail.setText(email);
 
-                // by default the profile url gives 50x50 px image only
-                // we can replace the value with whatever dimension we want by
-                // replacing sz=X
                 personPhotoUrl = personPhotoUrl.substring(0,
                         personPhotoUrl.length() - 2)
                         + PROFILE_PIC_SIZE;
 
                 new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
-
             } else {
                 Toast.makeText(getApplicationContext(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
+                        "Informacao de usuário inválida", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,45 +247,26 @@ public class MainActivity extends Activity implements OnClickListener,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-
-    /**
-     * Button on click listener
-     * */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sign_in:
-                // Signin button clicked
                 signInWithGplus();
                 break;
             case R.id.btn_sign_out:
-                // Signout button clicked
                 signOutFromGplus();
                 break;
             case R.id.btn_revoke_access:
-                // Revoke access button clicked
                 revokeGplusAccess();
                 break;
 
         }
     }
 
-
-
-    public void sendMessage() {
-        // Do something in response to button
-        Intent intent = new Intent(this, NovoMenu.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sign-in into google
-     * */
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
@@ -320,9 +274,6 @@ public class MainActivity extends Activity implements OnClickListener,
         }
     }
 
-    /**
-     * Sign-out from google
-     * */
     private void signOutFromGplus() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -332,9 +283,6 @@ public class MainActivity extends Activity implements OnClickListener,
         }
     }
 
-    /**
-     * Revoking access from google
-     * */
     private void revokeGplusAccess() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -352,7 +300,7 @@ public class MainActivity extends Activity implements OnClickListener,
     }
 
     /**
-     * Background Async task to load user profile picture from url
+     * Tarefa assincrona executada em backgroud para carregar a foto do usuario
      * */
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

@@ -4,14 +4,25 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.lauramarra.quintafeira.Alimentacao">
+    tools:context="com.example.lauramarra.quintafeira.Segunda">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Large Text"
+        android:id="@+id/dayText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:padding="10dp"/>
 
     <ListView
-        android:id="@+id/menuAlimentacao"
+        android:id="@+id/gradeDoDia"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_below="@+id/dayText">
     </ListView>
 
 </RelativeLayout>

@@ -5,13 +5,14 @@ package com.example.lauramarra.quintafeira;
  */
 public class GradeParcialDB extends GradeCompletaDB {
     private int _id;
-    private String _codigo, _nome, _status;
+    private String _codigo, _nome, _diaSemana, _status;
 
     public GradeParcialDB(){}
 
-    public GradeParcialDB(String codigo, String nome, String status) {
+    public GradeParcialDB(String codigo, String nome, String diaSemana, String status) {
         this._codigo = codigo;
         this._nome = nome;
+        this._diaSemana = diaSemana;
         this._status = status;
     }
 
@@ -26,6 +27,8 @@ public class GradeParcialDB extends GradeCompletaDB {
     public void set_nome(String _nome) {
         this._nome = _nome;
     }
+
+    public void set_diaSemana (String _diaSemana) { this._diaSemana = _diaSemana;}
 
     public void set_status(String _status) { this._status = _status; }
 
@@ -42,5 +45,7 @@ public class GradeParcialDB extends GradeCompletaDB {
     }
 
     public String get_status() { return _status; }
+
+    public String get_diaSemana () { return _diaSemana; }
 
 }

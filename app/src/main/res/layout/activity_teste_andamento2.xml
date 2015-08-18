@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.lauramarra.quintafeira.TesteAndamento2">
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -11,12 +13,13 @@
         android:textSize="20sp"
         android:id="@+id/titleText"/>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
+
+    <Spinner
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1º Periodo"
-        android:layout_below="@+id/titleText"/>
+        android:id="@+id/spinner2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/titleText" />
 
     <TextView android:layout_width="wrap_content"
         android:id="@+id/cursando"
@@ -24,7 +27,7 @@
         android:padding="10dp"
         android:text="@string/message2"
         android:textSize="13sp"
-        android:layout_below="@+id/button"/>
+        android:layout_below="@+id/spinner2"/>
 
     <TextView android:layout_width="wrap_content"
         android:id="@+id/concluido"
@@ -32,7 +35,7 @@
         android:padding="10dp"
         android:text="@string/message3"
         android:textSize="13sp"
-        android:layout_below="@id/button"
+        android:layout_below="@id/spinner2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
@@ -40,6 +43,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/concluido"/>
-
 
 </RelativeLayout>

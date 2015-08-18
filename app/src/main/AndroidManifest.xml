@@ -25,10 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Menu"
-            android:label="@string/title_activity_menu" >
-        </activity>
-        <activity
             android:name=".NovoMenu"
             android:label="@string/title_activity_novo_menu"
             android:parentActivityName=".MainActivity" >
@@ -93,16 +89,16 @@
                 android:value="com.example.lauramarra.quintafeira.Disciplinas" />
         </activity>
         <activity
-            android:name=".Monday"
-            android:label="@string/title_activity_monday"
+            android:name=".Segunda"
+            android:label="Segunda-Feira"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lauramarra.quintafeira.Disciplinas" />
         </activity>
         <activity
-            android:name=".Tuesday"
-            android:label="@string/title_activity_tuesday"
+            android:name=".Terca"
+            android:label="Terça-Feira"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -110,7 +106,7 @@
         </activity>
         <activity
             android:name=".Wednesday"
-            android:label="@string/title_activity_wednesday"
+            android:label="Quarta-Feira"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -118,7 +114,7 @@
         </activity>
         <activity
             android:name=".Thursday"
-            android:label="@string/title_activity_thursday"
+            android:label="Quinta-Feira"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -126,15 +122,47 @@
         </activity>
         <activity
             android:name=".Friday"
-            android:label="@string/title_activity_friday"
+            android:label="Sexta-Feira"
             android:parentActivityName=".Disciplinas" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lauramarra.quintafeira.Disciplinas" />
         </activity>
         <activity
-            android:name=".TesteAcesso2"
-            android:label="@string/title_activity_teste_acesso2" >
+            android:name=".TempoEspera"
+            android:label="@string/title_activity_sugestoes"
+            android:parentActivityName=".Alimentacao" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Alimentacao" />
+        </activity>
+        <activity
+            android:name=".QualidadeRestaurante"
+            android:label="@string/title_activity_qualidade_restaurante"
+            android:parentActivityName=".Alimentacao" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Alimentacao" />
+        </activity>
+        <activity
+            android:name=".Restaurantes"
+            android:label="@string/title_activity_restaurantes"
+            android:parentActivityName=".Alimentacao" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Alimentacao" />
+        </activity>
+        <activity
+            android:name=".TesteAndamento"
+            android:label="@string/title_activity_teste_andamento" >
+        </activity>
+        <activity
+            android:name=".TesteAndamento2"
+            android:label="@string/title_activity_teste_andamento2"
+            android:parentActivityName=".Disciplinas" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lauramarra.quintafeira.Disciplinas" />
         </activity>
     </application>
 

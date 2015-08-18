@@ -5,7 +5,7 @@ package com.example.lauramarra.quintafeira;
  */
 public class GradeCompletaDB {
     private int _id;
-    private String _codigo, _nome, _periodo, _creditos, _preRequisito1, _preRequisito2, _preRequisito3, _diaSemana, _local;
+    private String _codigo, _nome, _periodo, _creditos, _preRequisito1, _diaSemana, _local, _status;
 
     public GradeCompletaDB(){}
 
@@ -14,19 +14,17 @@ public class GradeCompletaDB {
                            String periodo,
                            String creditos,
                            String preRequisito1,
-                           String preRequisito2,
-                           String preRequisito3,
                            String diaSemana,
-                           String local) {
+                           String local,
+                           String status) {
         this._codigo = codigo;
         this._nome = nome;
         this._periodo = periodo;
         this._creditos = creditos;
         this._preRequisito1 = preRequisito1;
-        this._preRequisito2 = preRequisito2;
-        this._preRequisito3 = preRequisito3;
         this._diaSemana = diaSemana;
         this._local = local;
+        this._status = status;
     }
 
     public void set_id(int _id) {
@@ -53,19 +51,13 @@ public class GradeCompletaDB {
         this._preRequisito1 = _preRequisito1;
     }
 
-    public void set_preRequisito2(String _preRequisito2) {
-        this._preRequisito2 = _preRequisito2;
-    }
-
-    public void set_preRequisito3(String _preRequisito3) {
-        this._preRequisito3 = _preRequisito3;
-    }
-
     public void set_diaSemana(String _diaSemana) {
         this._diaSemana = _diaSemana;
     }
 
     public void set_local(String _local) { this._local = _local; }
+
+    public void set_status(String _status) {this._status = _status; }
 
     public int get_id() {
         return _id;
@@ -91,17 +83,11 @@ public class GradeCompletaDB {
         return _preRequisito1;
     }
 
-    public String get_preRequisito2() {
-        return _preRequisito2;
-    }
-
-    public String get_preRequisito3() {
-        return _preRequisito3;
-    }
-
     public String get_diaSemana() {
         return _diaSemana;
     }
 
     public String get_local() { return _local; }
+
+    public String get_status() { return _status; }
 }

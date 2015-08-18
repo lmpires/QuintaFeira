@@ -11,62 +11,62 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-public class Wednesday extends ActionBarActivity {
+public class Segunda extends ActionBarActivity {
 
+    final String[] local = new String[10];
     TextView dayText;
     MyDBHandler dbHandler;
     MyDBHandler2 dbChecker;
-    private ListView gradeDoDia;
     String[] menuOptionsName, menuOptionsCode = new String[10];
-    final String[] local = new String[10];
+    private ListView gradeDoDia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wednesday);
+        setContentView(R.layout.activity_segunda);
 
         dayText = (TextView) findViewById(R.id.dayText);
-        dayText.setText("Olá! " + "\n" + "Estas são suas aulas do dia:");
+        dayText.setText("Olá! " + "\n" + "\n" + "Estas são suas aulas do dia:");
 
         gradeDoDia = (ListView) findViewById(R.id.gradeDoDia);
 
         dbChecker = new MyDBHandler2(this, null, null, 1);
         dbHandler = new MyDBHandler(getApplicationContext(), null, null, 1);
 
-        menuOptionsName = dbChecker.getClassName("friday").split(";");
-        menuOptionsCode = dbChecker.getClassID("friday").split(";");
+        menuOptionsName = dbChecker.getClassName("segunda").split(";");
+        menuOptionsCode = dbChecker.getClassID("segunda").split(";");
 
         for(int i = 0; i < menuOptionsName.length; i++) {
             local[i]= dbHandler.getLocal(menuOptionsCode[i]);
         }
 
         ArrayAdapter<String> newAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOptionsName);
+                new ArrayAdapter<String>(
+                        this, android.R.layout.simple_list_item_1, menuOptionsName);
 
         gradeDoDia.setAdapter(newAdapter);
 
         gradeDoDia.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(
+                    AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog alertDialog;
                 String cut;
-
                 switch (position) {
                     case 0:
                         cut = local[0].substring(0,4);
-                        alertDialog = new AlertDialog.Builder(Wednesday.this).create();
+                        alertDialog = new AlertDialog.Builder(Segunda.this).create();
                         alertDialog.setTitle(menuOptionsName[0]);
                         alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
                         alertDialog.show();
                         break;
                     case 1:
-                        cut = local[0].substring(0,4);
-                        alertDialog = new AlertDialog.Builder(Wednesday.this).create();
+                        cut = local[1].substring(0,4);
+                        alertDialog = new AlertDialog.Builder(Segunda.this).create();
                         alertDialog.setTitle(menuOptionsName[1]);
                         alertDialog.setMessage("Local: " + cut + "\n" + "Status: Cancelada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
@@ -76,8 +76,30 @@ public class Wednesday extends ActionBarActivity {
                         alertDialog.show();
                         break;
                     case 2:
-                        cut = local[0].substring(0,4);
-                        alertDialog = new AlertDialog.Builder(Wednesday.this).create();
+                        cut = local[2].substring(0, 4);
+                        alertDialog = new AlertDialog.Builder(Segunda.this).create();
+                        alertDialog.setTitle(menuOptionsName[2]);
+                        alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
+                        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alertDialog.show();
+                        break;
+                    case 3:
+                        cut = local[3].substring(0, 4);
+                        alertDialog = new AlertDialog.Builder(Segunda.this).create();
+                        alertDialog.setTitle(menuOptionsName[2]);
+                        alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
+                        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alertDialog.show();
+                        break;
+                    case 4:
+                        cut = local[4].substring(0, 4);
+                        alertDialog = new AlertDialog.Builder(Segunda.this).create();
                         alertDialog.setTitle(menuOptionsName[2]);
                         alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
@@ -88,7 +110,6 @@ public class Wednesday extends ActionBarActivity {
                         break;
                 }
             }
-
         });
     }
 }

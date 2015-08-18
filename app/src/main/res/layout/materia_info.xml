@@ -26,16 +26,5 @@
         android:text="TextView" />
 
 
-    <Switch
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/switch1"
-        android:layout_alignBottom="@+id/code"
-        android:layout_toRightOf="@+id/code"
-        android:layout_toEndOf="@+id/code"
-        android:layout_marginLeft='140dp'
-        android:layout_marginStart="50dp"
-        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

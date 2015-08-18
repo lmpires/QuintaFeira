@@ -10,23 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Locale;
 
-
-public class Monday extends ActionBarActivity {
-
+public class Terca extends ActionBarActivity {
     TextView dayText;
     MyDBHandler dbHandler;
     MyDBHandler2 dbChecker;
-
     private ListView gradeDoDia;
-    String[] menuOptions = new String[20];
+    String[] menuOptionsName, menuOptionsCode = new String[10];
+    final String[] local = new String[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wednesday);
+        setContentView(R.layout.activity_terca);
 
         dayText = (TextView) findViewById(R.id.dayText);
         dayText.setText("Olá! " + "\n" + "\n" + "Estas são suas aulas do dia:");
@@ -34,11 +30,16 @@ public class Monday extends ActionBarActivity {
         gradeDoDia = (ListView) findViewById(R.id.gradeDoDia);
 
         dbChecker = new MyDBHandler2(this, null, null, 1);
+        dbHandler = new MyDBHandler(getApplicationContext(), null, null, 1);
 
-        menuOptions = dbChecker.getID().split(";");
+        menuOptionsName = dbChecker.getClassName("tuesday").split(";");
+        menuOptionsCode = dbChecker.getClassID("tuesday").split(";");
 
+        for(int i = 0; i < menuOptionsName.length; i++) {
+            local[i]= dbHandler.getLocal(menuOptionsCode[i]);
+        }
         ArrayAdapter<String> newAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOptions);
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOptionsName);
 
         gradeDoDia.setAdapter(newAdapter);
 
@@ -47,15 +48,14 @@ public class Monday extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 AlertDialog alertDialog;
-
-                dbHandler = new MyDBHandler(getApplicationContext(), null, null, 1);
+                String cut;
 
                 switch (position) {
                     case 0:
-
-                        alertDialog = new AlertDialog.Builder(Monday.this).create();
-                        alertDialog.setTitle(menuOptions[0]);
-                        alertDialog.setMessage("Local: " + dbHandler.getLocal(menuOptions[0]) + "\n" + "Status: Confimada!");
+                        cut = local[0].substring(0,4);
+                        alertDialog = new AlertDialog.Builder(Terca.this).create();
+                        alertDialog.setTitle(menuOptionsName[0]);
+                        alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -63,9 +63,10 @@ public class Monday extends ActionBarActivity {
                         alertDialog.show();
                         break;
                     case 1:
-                        alertDialog = new AlertDialog.Builder(Monday.this).create();
-                        alertDialog.setTitle(menuOptions[1]);
-                        alertDialog.setMessage("Local: F112" + "\n" + "Status: Cancelada!");
+                        cut = local[1].substring(0, 4);
+                        alertDialog = new AlertDialog.Builder(Terca.this).create();
+                        alertDialog.setTitle(menuOptionsName[1]);
+                        alertDialog.setMessage("Local: " + cut + "\n" + "Status: Cancelada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -73,9 +74,10 @@ public class Monday extends ActionBarActivity {
                         alertDialog.show();
                         break;
                     case 2:
-                        alertDialog = new AlertDialog.Builder(Monday.this).create();
-                        alertDialog.setTitle(menuOptions[2]);
-                        alertDialog.setMessage("Local: H217" + "\n" + "Status: Confimada!");
+                        cut = local[2].substring(0, 4);
+                        alertDialog = new AlertDialog.Builder(Terca.this).create();
+                        alertDialog.setTitle(menuOptionsName[2]);
+                        alertDialog.setMessage("Local: " + cut + "\n" + "Status: Confimada!");
                         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -87,30 +89,4 @@ public class Monday extends ActionBarActivity {
 
         });
     }
-
-
-    public String[] getTodaysClass(){
-
-        //Get day
-        Calendar sCalendar = Calendar.getInstance();
-        String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-
-        dbChecker = new MyDBHandler2(this, null, null, 1);
-        dbHandler = new MyDBHandler(this, null, null, 1);
-
-        //Get codes
-        String allCodes = dbChecker.getID();
-        String[] codeArray = allCodes.split(";");
-
-        //dayText.setText(codeArray[0]);
-
-        String teste = dbHandler.getTodaysClass(codeArray[0], day);
-
-        final String[] d = new String[] {dbHandler.getTodaysClass(codeArray[0], day),
-                dbHandler.getTodaysClass(codeArray[1], day)};
-
-        return d;
-    }
-
-
 }

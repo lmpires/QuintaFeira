@@ -13,11 +13,8 @@ import java.util.Calendar;
 
 public class Disciplinas extends ActionBarActivity {
 
-
-    private ListView menuDisciplinas;
-
     String[] menuOpDisciplinas = new String[] { "Grade","Andamento", "Qualidade"};
-
+    private ListView menuDisciplinas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +27,6 @@ public class Disciplinas extends ActionBarActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuOpDisciplinas);
 
         menuDisciplinas.setAdapter(newAdapter);
-
         menuDisciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -43,34 +39,29 @@ public class Disciplinas extends ActionBarActivity {
                     case 0:
                         switch (day) {
                             case Calendar.MONDAY:
-                                i = new Intent(getApplicationContext(), Monday.class);
+                                i = new Intent(getApplicationContext(), Segunda.class);
                                 startActivity(i);
                                 break;
                             case Calendar.TUESDAY:
-                                i = new Intent(getApplicationContext(), Tuesday.class);
+                                i = new Intent(getApplicationContext(), Terca.class);
                                 startActivity(i);
                                 break;
-
                             case Calendar.WEDNESDAY:
                                 i = new Intent(getApplicationContext(), Wednesday.class);
                                 startActivity(i);
                                 break;
                             case Calendar.THURSDAY:
-                                i = new Intent(getApplicationContext(), Wednesday.class);
+                                i = new Intent(getApplicationContext(), Thursday.class);
                                 startActivity(i);
                                 break;
                             case Calendar.FRIDAY:
-                                i = new Intent(getApplicationContext(), Wednesday.class);
-                                startActivity(i);
-                                break;
-                            case Calendar.SUNDAY:
-                                i = new Intent(getApplicationContext(), Wednesday.class);
+                                i = new Intent(getApplicationContext(), Friday.class);
                                 startActivity(i);
                                 break;
                         }
                         break;
                     case 1:
-                        i = new Intent(getApplicationContext(), Andamento.class);
+                        i = new Intent(getApplicationContext(), TesteAndamento2.class);
                         startActivity(i);
                         break;
                     case 2:
@@ -81,6 +72,5 @@ public class Disciplinas extends ActionBarActivity {
             }
 
         });
-
     }
 }

@@ -25,17 +25,14 @@
         android:layout_toRightOf="@+id/checkBox1"
         android:text="TextView" />
 
-
-    <Switch
-        android:layout_width="20dp"
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/switch1"
-        android:layout_alignBottom="@+id/code"
-        android:layout_toRightOf="@+id/code"
-        android:layout_toEndOf="@+id/code"
-        android:layout_marginLeft='100dp'
-        android:layout_marginStart="50dp"
-        android:layout_alignParentRight="true"/>
+        android:text="TextView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,13 +42,8 @@ public class Qualidade extends Activity {
 
         // Listview Group click listener
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return false;
             }
         });
@@ -64,35 +60,43 @@ public class Qualidade extends Activity {
 
                 // TODO Auto-generated method stub
 
-                switch(childPosition){
+                switch (groupPosition){
                     case 0:
-                        uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/4T1mxZDG7hy");
-                        launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-                        startActivity(launchBrowser);
-                        break;
+                        switch(childPosition){
+                            case 0:
+                                uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/4T1mxZDG7hy");
+                                launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                                startActivity(launchBrowser);
+                                break;
 
-                    case 1:
-                        uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/6WZjjeuAX7x");
-                        launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-                        startActivity(launchBrowser);
-                        break;
+                            case 1:
+                                uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/6WZjjeuAX7x");
+                                launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                                startActivity(launchBrowser);
+                                break;
 
-                    case 2:
-                        uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/2XGBdMf6g92");
-                        launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-                        startActivity(launchBrowser);
-                        break;
+                            case 2:
+                                uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/2XGBdMf6g92");
+                                launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                                startActivity(launchBrowser);
+                                break;
 
-                    case 3:
-                        uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/E3ZuDuL39q7");
-                        launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-                        startActivity(launchBrowser);
-                        break;
+                            case 3:
+                                uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/E3ZuDuL39q7");
+                                launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                                startActivity(launchBrowser);
+                                break;
 
-                    case 4:
-                        uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/N1etnf6FHX9");
-                        launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-                        startActivity(launchBrowser);
+                            case 4:
+                                uriUrl = Uri.parse("https://plus.google.com/107217033654580487496/posts/N1etnf6FHX9");
+                                launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                                startActivity(launchBrowser);
+                                break;
+                        }
+                    default:
+                        Toast.makeText(getApplicationContext(),
+                                "Desculpe, avalição não disponível no momento.",
+                                Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
