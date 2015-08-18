@@ -35,5 +35,6 @@
     <string name="title_activity_restaurantes">Restaurantes</string>
     <string name="title_activity_teste_andamento">TesteAndamento</string>
     <string name="title_activity_teste_andamento2">TesteAndamento2</string>
+    <string name="title_activity_burguesao">Burguesao</string>
 
 </resources>
