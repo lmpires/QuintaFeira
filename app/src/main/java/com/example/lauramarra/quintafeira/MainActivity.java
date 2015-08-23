@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements OnClickListener,
     private SignInButton btnSignIn;
     private Button btnSignOut, btnRevokeAccess;
     private ImageView imgProfilePic;
-    private TextView txtName, txtEmail;
+    private TextView txtName, txtEmail, appNAme;
     private LinearLayout llProfileLayout;
     private ListView menuList;
 
@@ -72,6 +72,7 @@ public class MainActivity extends Activity implements OnClickListener,
         imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
+        appNAme = (TextView) findViewById(R.id.appName);
         llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
 
         menuList = (ListView) findViewById(R.id.menuList);
@@ -111,6 +112,7 @@ public class MainActivity extends Activity implements OnClickListener,
         btnSignIn.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
         btnRevokeAccess.setOnClickListener(this);
+        appNAme.setText("Cidade Universitária Inteligente");
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
@@ -191,12 +193,14 @@ public class MainActivity extends Activity implements OnClickListener,
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
+            appNAme.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
             btnRevokeAccess.setVisibility(View.VISIBLE);
             llProfileLayout.setVisibility(View.VISIBLE);
             menuList.setVisibility(View.VISIBLE);
         } else {
             btnSignIn.setVisibility(View.VISIBLE);
+            appNAme.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
             btnRevokeAccess.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
