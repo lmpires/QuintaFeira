@@ -93,6 +93,8 @@ public class Qualidade extends Activity {
                                 startActivity(launchBrowser);
                                 break;
                         }
+                        break;
+
                     default:
                         Toast.makeText(getApplicationContext(),
                                 "Desculpe, avalição não disponível no momento.",
