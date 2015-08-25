@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by lauramarra on 11/02/15.
  */
 public class MyDBHandler2 extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "andamentoDB.db";
     public static final String TABLE_ANDAMENTO = "andamento";
     public static final String COLUMN_ID = "_id";

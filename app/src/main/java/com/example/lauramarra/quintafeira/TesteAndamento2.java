@@ -304,7 +304,7 @@ public class TesteAndamento2 extends ActionBarActivity implements AdapterView.On
                         builder.setPositiveButton("Sim!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 Toast.makeText(TesteAndamento2.this,
-                                        "concluida=" + arg1, Toast.LENGTH_SHORT).show();
+                                        "Concluida", Toast.LENGTH_SHORT).show();
 
                                 if (dbChecker.itemExists()) {
                                     dbChecker.delMateria(itemMat.getCode());
@@ -325,7 +325,7 @@ public class TesteAndamento2 extends ActionBarActivity implements AdapterView.On
                         builder.setNeutralButton("Pendente", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 Toast.makeText(TesteAndamento2.this,
-                                        "Pendente=" + arg1, Toast.LENGTH_SHORT).show();
+                                        "Pendente", Toast.LENGTH_SHORT).show();
 
                                 if (dbChecker.itemExists()) {
                                     dbChecker.delMateria(itemMat.getCode());

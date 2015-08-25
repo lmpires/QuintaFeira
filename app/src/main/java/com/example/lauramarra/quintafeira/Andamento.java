@@ -197,7 +197,7 @@ public class Andamento extends ActionBarActivity {
 
                         builder.setPositiveButton("Sim!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Andamento.this, "concluida=" + arg1, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Andamento.this, "Concluída", Toast.LENGTH_SHORT).show();
                                 if (dbChecker.itemExists()) {
                                     dbChecker.delMateria(itemMat.getCode());
                                 }
@@ -208,25 +208,10 @@ public class Andamento extends ActionBarActivity {
 
                             }
                         });
-/*
-                        builder.setNeutralButton("Pendente", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Andamento.this, "Pendente=" + arg1, Toast.LENGTH_SHORT).show();
 
-                                if (dbChecker.itemExists()) {
-                                    dbChecker.delMateria(itemMat.getCode());
-                                }
-                                GradeParcialDB materia = new GradeParcialDB(itemMat.getCode(), itemMat.getName(), itemMat.getDiaSemana(), "Pendente");
-                                dbChecker.addMateria(materia);
-                                itemMat.setStatus("Pendente");
-                                status.setText("Pendente");
-                                cb.setChecked(false);
-                            }
-                        });
-*/
                         builder.setNegativeButton("Cursando", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Andamento.this, "cursando=" + arg1, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Andamento.this, "Cursando", Toast.LENGTH_SHORT).show();
 
                                 if (dbChecker.itemExists()) {
                                     dbChecker.delMateria(itemMat.getCode());
@@ -255,8 +240,6 @@ public class Andamento extends ActionBarActivity {
             holder.name.setText(itemMat.getName());
             holder.name.setChecked(itemMat.isSelected());
             holder.name.setTag(itemMat);
-            //holder.status.setText(itemMat.getStatus());
-
 
             if(loadSavedPreferences(itemMat.getName()))
                 holder.name.setChecked(true);
