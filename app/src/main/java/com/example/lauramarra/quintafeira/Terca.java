@@ -32,8 +32,8 @@ public class Terca extends ActionBarActivity {
         dbChecker = new MyDBHandler2(this, null, null, 1);
         dbHandler = new MyDBHandler(getApplicationContext(), null, null, 1);
 
-        menuOptionsName = dbChecker.getClassName("tuesday").split(";");
-        menuOptionsCode = dbChecker.getClassID("tuesday").split(";");
+        menuOptionsName = dbChecker.getClassName("terca").split(";");
+        menuOptionsCode = dbChecker.getClassID("terca").split(";");
 
         for(int i = 0; i < menuOptionsName.length; i++) {
             local[i]= dbHandler.getLocal(menuOptionsCode[i]);
